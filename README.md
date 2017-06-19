@@ -23,3 +23,75 @@ The function creates a `GraphNode` out of each identifier in the input hash, eac
 If the `load_order` array length does not equal the number of `nodes`, a cycle is present, and an `ArgumentError` is raised.
 
 The algorithm's space and time complexity are `O(n*m)`, where n is the number of nodes and m is the number of edges.
+
+## Examples (also found in spec file)
+Example 1: Simple case:
+```ruby
+  #            a
+  #          /   \
+  #        b      c
+  #      /  \      \
+  #    b1   b2      c1
+  #        /
+  #     b2_1
+
+  hash = {
+    a: [:b, :c],
+    b: [:b1, :b2],
+    b2: [:b2_1],
+    c: [:c1]
+  }
+
+  result = topological_sort(hash) # returns [:b1, :b2_1, :b2_2, :b2_3, :c1, :b2, :c, :b, :a]
+```
+
+Example 2: More complex case:
+```ruby
+  #   a          c
+  #    \      / |  \
+  #     \   k  b    l
+  #      \ | /  \ /  \
+  #        t     j    p
+  #      /  \  /    /  \
+  #     g    s     m    n
+  #   /  \    \   /    / \
+  #  f    d     w     /   z
+  #        \_____\   /
+  #               \ /
+  #                y
+
+  hash = {
+    a: [:t],
+    c: [:k, :b, :l],
+    k: [:t],
+    b: [:t, :j],
+    l: [:j, :p],
+    t: [:g, :s],
+    j: [:s],
+    s: [:w],
+    p: [:m, :n],
+    m: [:w],
+    n: [:y, :z],
+    g: [:d, :f],
+    d: [:y],
+    w: [:y]
+  }
+
+  # returns [:y, :z, :f, :d, :w, :n, :g, :s, :m, :t, :j, :p, :a, :k, :b, :l, :c]
+  result = topological_sort(hash)
+```
+
+Example 3: When a cycle exists:
+```ruby
+  #     ____
+  #   /     \
+  #  a      b
+  #   \____/
+
+  hash = {
+    a: [:b],
+    b: [:a]
+  }
+
+  result = topological_sort(hash) # throws an ArgumentError 'Cycle present in input hash'
+```
