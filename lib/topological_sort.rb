@@ -69,11 +69,11 @@ def test
   hash = {
     a: [:b, :c],
     b: [:b1, :b2],
-    b2: [:b2_1, :b2_2, :b2_3],
+    b2: [:b2_1],
     c: [:c1]
   }
 
   p topological_sort(hash)
 end
 
-# test
+test

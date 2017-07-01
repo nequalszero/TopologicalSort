@@ -42,7 +42,7 @@ Example 1: Simple case:
     c: [:c1]
   }
 
-  result = topological_sort(hash) # returns [:b1, :b2_1, :b2_2, :b2_3, :c1, :b2, :c, :b, :a]
+  result = topological_sort(hash) # returns [:b1, :b2_1, :c1, :b2, :c, :b, :a]
 ```
 
 Example 2: More complex case:
